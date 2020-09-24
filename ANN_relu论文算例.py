@@ -7,15 +7,15 @@ l = 0.01
 '''论文上的例子
 '''
 def f(x):
-    return (4 * (x - 1 / 3) / l + 2*x/l - 4*x*(x-1/3)**2/l**2) * np.exp(-(x - 1 / 3) ** 2 / l)
+    return (4 * (x - 1 / 3) / l + 2*x/l - 4*x*(x-1/3)**2/(l**2)) * np.exp(-(x - 1 / 3) ** 2 / l)
 def gradientf(x):
     value = []
     for x_1 in x:
-        y_1 = np.exp(-(x_1 - 1 / 3) ** 2 / l) * (6/l-12*x_1*(x_1-1/3)/l**2-12*(x_1-1/3)**2/l**2+8*x_1*(x_1-1/3)**3/l**3)
+        y_1 = np.exp(-(x_1 - 1 / 3) ** 2 / l) * (6/l-12*x_1*(x_1-1/3)/(l**2)-12*(x_1-1/3)**2/(l**2)+8*x_1*(x_1-1/3)**3/(l**3))
 
         value.append(y_1)
     return value
-for N in range(23,264,24):
+for N in range(8,25,8):
     t0 = np.arange(0.0,1.001,1/N)
     d = 1.0 / (t0[2:]-t0[1:-1]) + 1.0 / (t0[1:-1]-t0[0:-2])
     r = 1.0 / (t0[2:-1]-t0[1:-2])
@@ -60,8 +60,8 @@ for N in range(23,264,24):
 
     fig = plt.figure
     x1 = np.linspace(0,1,100)
-    y1 = x1*(np.exp(-(x1-1/3)**2/l)-np.exp(-4/9*l))#解析解
-    plt.plot(x1,y1,color = 'blue', linewidth='1.0', linestyle='--')
+    y1 = x1*(np.exp(-(x1-1/3)**2/l)-np.exp(-4/(9*l)))#解析解
+    l1,=plt.plot(x1,y1,color = 'blue', linewidth='1.0', linestyle='--')
 
     for i in range(1,N):
 
@@ -70,7 +70,8 @@ for N in range(23,264,24):
         u2 = np.zeros(lx2, dtype=np.float)
         for j in range(2,i+1):
             u2 = u2 + (theta[j-1]-theta[j-2])*(x2-t0[j-2])
-        plt.plot(x2,u2, color='red', linewidth='1.0', linestyle='-')
+        l2,=plt.plot(x2,u2, color='red', linewidth='1.0', linestyle='-')
+    plt.legend(handles=[l1, l2], labels=['analytic solution', 'DNN solution'], loc='best')
     plt.show()
     plt.close()
 

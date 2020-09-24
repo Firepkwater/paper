@@ -59,8 +59,6 @@ def LoadVec1D(x,f):
         b[i] = b[i] + f(x[i])*h/2
         b[i+1] = b[i+1] + f(x[i+1])*h/2
     return b
-
-
 #加密的图像
 
 A1 = Stiffmat1D(x_1)
